@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -39,7 +38,7 @@ export function SignIn() {
 
   return (
     <>
-      <Helmet title="Login" />
+      <title>Login | pizza.shop</title>
       <div className="p-8">
         <Button
           variant={'secondary'}

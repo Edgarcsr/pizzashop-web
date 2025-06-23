@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -27,7 +26,7 @@ export function SignUp() {
     formState: { isSubmitting },
   } = useForm<SignUpForm>()
 
-  async function handleSignUp(data: SignUpForm) {
+  async function handleSignUp(/* data: SignUpForm */) {
     try {
       toast.success('Restaurante cadastrado com sucesso!', {
         action: {
@@ -42,7 +41,7 @@ export function SignUp() {
 
   return (
     <>
-      <Helmet title="Cadastro" />
+      <title>Cadastro | pizza.shop</title>
       <div className="p-8">
         <Button
           variant={'secondary'}
