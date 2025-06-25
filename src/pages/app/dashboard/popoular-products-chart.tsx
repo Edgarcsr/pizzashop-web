@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { BarChart } from 'lucide-react'
+import { BarChart, Loader2 } from 'lucide-react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import colors from 'tailwindcss/colors'
 
@@ -7,17 +7,17 @@ import { getPopularProducts } from '@/api/get-popular-products'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const COLORS = [
-  colors.violet[500],
-  colors.rose[500],
+  colors.sky[500],
   colors.amber[500],
+  colors.violet[500],
   colors.emerald[500],
-  colors.lime[500],
+  colors.rose[500],
 ]
 
 export function PopularProductsChart() {
   const { data: popularProducts } = useQuery({
-    queryFn: getPopularProducts,
     queryKey: ['metrics', 'popular-products'],
+    queryFn: getPopularProducts,
   })
 
   return (
@@ -25,24 +25,24 @@ export function PopularProductsChart() {
       <CardHeader className="pb-8">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base font-medium">
-            Produtos Populares
+            Produtos populares
           </CardTitle>
-          <BarChart className="text-muted-foreground !h-4 !w-4" />
+          <BarChart className="text-muted-foreground h-4 w-4" />
         </div>
       </CardHeader>
       <CardContent>
-        {popularProducts && (
+        {popularProducts ? (
           <ResponsiveContainer width="100%" height={240}>
             <PieChart style={{ fontSize: 12 }}>
               <Pie
                 data={popularProducts}
-                dataKey={'amount'}
-                nameKey={'product'}
+                nameKey="product"
+                dataKey="amount"
                 cx="50%"
                 cy="50%"
                 outerRadius={86}
                 innerRadius={64}
-                strokeWidth={6}
+                strokeWidth={8}
                 labelLine={false}
                 label={({
                   cx,
@@ -76,11 +76,11 @@ export function PopularProductsChart() {
                   )
                 }}
               >
-                {popularProducts.map((__dirname, i) => {
+                {popularProducts.map((_, index) => {
                   return (
                     <Cell
-                      key={`cell-${i}`}
-                      fill={COLORS[i]}
+                      key={`cell-${index}`}
+                      fill={COLORS[index]}
                       className="stroke-background hover:opacity-80"
                     />
                   )
@@ -88,6 +88,10 @@ export function PopularProductsChart() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
+          </div>
         )}
       </CardContent>
     </Card>
