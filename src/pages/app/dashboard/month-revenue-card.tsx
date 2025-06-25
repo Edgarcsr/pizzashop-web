@@ -1,10 +1,17 @@
+import { useQuery } from '@tanstack/react-query'
 import { DollarSign } from 'lucide-react'
 
+import { getMonthRevenue } from '@/api/get-month-revenue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 // export interface MonthRevenueCardProps {}
 
 export function MonthRevenueCard(/* props: MonthRevenueCardProps */) {
+  const { data: monthRevenue } = useQuery({
+    queryFn: getMonthRevenue,
+    queryKey: ['metrics', 'month-revenue'],
+  })
+
   return (
     <Card className="flex gap-2">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -14,11 +21,33 @@ export function MonthRevenueCard(/* props: MonthRevenueCardProps */) {
         <DollarSign className="text-muted-foreground !h-4 !w-4" />
       </CardHeader>
       <CardContent>
-        <span className="text-2xl font-bold tracking-tight">R$ 1248,60</span>
-        <p className="text-muted-foreground mt-1 text-xs">
-          <span className="text-emerald-500 dark:text-emerald-400">+2%</span> em
-          relação ao mês passado
-        </p>
+        {monthRevenue && (
+          <>
+            <span className="text-2xl font-bold tracking-tight">
+              {(monthRevenue.receipt / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })}
+            </span>
+            <p className="text-muted-foreground mt-1 text-xs">
+              {monthRevenue.diffFromLastMonth >= 0 ? (
+                <>
+                  <span className="text-emerald-500 dark:text-emerald-400">
+                    +{monthRevenue.diffFromLastMonth}%
+                  </span>{' '}
+                  em relação a ontem
+                </>
+              ) : (
+                <>
+                  <span className="text-rose-500 dark:text-rose-400">
+                    {monthRevenue.diffFromLastMonth}%
+                  </span>{' '}
+                  em relação a ontem
+                </>
+              )}
+            </p>
+          </>
+        )}
       </CardContent>
     </Card>
   )
