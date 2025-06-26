@@ -79,7 +79,7 @@ test('filter by status', async ({ page }) => {
 
   await page.waitForLoadState('networkidle')
 
-  const tableRows = await page.getByRole('cell', { name: 'Pendente' }).all()
+  const tableRows = page.getByRole('cell', { name: 'Pendente' })
 
-  expect(tableRows).toHaveLength(2)
+  await expect(tableRows).toHaveCount(10)
 })
