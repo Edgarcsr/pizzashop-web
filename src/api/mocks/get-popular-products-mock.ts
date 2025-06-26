@@ -2,16 +2,16 @@ import { http, HttpResponse } from 'msw'
 
 import type { GetPopularProductsResponse } from '../get-popular-products'
 
-export const getGetPopularProductsMock = http.get<
+export const getPopularProductsMock = http.get<
   never,
   never,
   GetPopularProductsResponse
 >('/metrics/popular-products', () => {
   return HttpResponse.json([
-    { product: 'Pizza Pepperoni', amount: 1 },
-    { product: 'Pizza Portuguesa', amount: 4 },
-    { product: 'Pizza Mussarela', amount: 7 },
-    { product: 'Pizza Calabresa', amount: 2 },
-    { product: 'Pizza Aliche', amount: 6 },
+    { product: 'Pizza 01', amount: 5 },
+    { product: 'Pizza 02', amount: 3 },
+    { product: 'Pizza 03', amount: 2 },
+    { product: 'Pizza 04', amount: 7 },
+    { product: 'Pizza 05', amount: 4 },
   ])
 })
