@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>pizza.shop</title>
+    <style>
+      /* Tokens from src/global.css (.dark): primary oklch(0.645 0.246 16.439) ~ rose-500 */
+      :root {
+        --bg: #09090b;
+        --fg: #fafafa;
+        --muted: #a1a1aa;
+        --accent: #f43f5e;
+        --app-bg: #09090b;
+        --app-panel: #09090b;
+        --app-border: rgb(255 255 255 / 0.1);
+        --app-fg: #fafafa;
+        --app-muted: #a1a1aa;
+        --app-accent: #f43f5e;
+        /* The app uses Tailwind's default sans stack */
+        --font: ui-sans-serif, system-ui, sans-serif, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: transparent;
+        color: var(--fg);
+        font-family: var(--font);
+      }
+
+      .banner {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: var(--bg);
+        border-radius: 16px;
+      }
+
+      #art {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+
+      .glow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background:
+          radial-gradient(60% 80% at 80% 30%, rgb(159 18 57 / 0.4), transparent 70%),
+          radial-gradient(40% 50% at 95% 95%, rgb(244 63 94 / 0.18), transparent 70%);
+      }
+
+      .brand {
+        position: absolute;
+        z-index: 2;
+        top: 66px;
+        left: 66px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .logo {
+        width: 52px;
+        height: 52px;
+        stroke: var(--accent);
+      }
+
+      .brand-name {
+        font-size: 44px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--accent);
+      }
+
+      .title {
+        position: absolute;
+        z-index: 2;
+        top: 138px;
+        left: 66px;
+        width: 760px;
+        font-size: 68px;
+        line-height: 1.12;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+
+      .mockup {
+        position: absolute;
+        z-index: 3;
+        left: 56px;
+        top: 356px;
+        width: 1180px;
+        height: 420px;
+        border-radius: 30px 0 0 0;
+        border: 7px solid rgb(255 255 255 / 0.16);
+        border-bottom: 0;
+        border-right: 0;
+        background: var(--app-panel);
+        background-clip: padding-box;
+        padding: 4px 0 0 4px;
+        box-shadow:
+          0 0 0 1px rgb(255 255 255 / 0.07),
+          0 -20px 80px rgb(0 0 0 / 0.55);
+        font-size: 13px;
+        color: var(--app-fg);
+        overflow: hidden;
+      }
+
+      svg.i {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* Header (src/components/header.tsx) */
+      .hdr {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        height: 60px;
+        padding: 0 24px;
+        border-bottom: 1px solid var(--app-border);
+      }
+      .hdr .sep {
+        width: 1px;
+        height: 24px;
+        background: var(--app-border);
+      }
+      .nav {
+        display: flex;
+        gap: 24px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--app-muted);
+      }
+      .nav span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav .on {
+        color: var(--app-fg);
+      }
+      .hdr .right {
+        margin-left: auto;
+        margin-right: 60px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 36px;
+        padding: 0 12px;
+        border: 1px solid rgb(255 255 255 / 0.15);
+        border-radius: 8px;
+        background: rgb(255 255 255 / 0.04);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Dashboard (src/pages/app/dashboard) */
+      .page {
+        padding: 24px 60px 0 32px;
+      }
+      h2 {
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin-bottom: 16px;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .card {
+        border: 1px solid var(--app-border);
+        border-radius: 12px;
+        padding: 20px 24px;
+        background: #09090b;
+      }
+      .card .t {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .card .t svg {
+        width: 16px;
+        height: 16px;
+        color: var(--app-muted);
+      }
+      .card .v {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .card .d {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--app-muted);
+      }
+      .up {
+        color: #34d399;
+      }
+      .down {
+        color: #fb7185;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="banner">
+      <div class="glow"></div>
+      <canvas id="art" width="1200" height="630"></canvas>
+
+      <div class="brand">
+        <svg class="logo i" viewBox="0 0 24 24">
+          <path d="m12 14-1 1" />
+          <path d="m13.75 18.25-1.25 1.42" />
+          <path d="M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12" />
+          <path d="M18.8 9.3a1 1 0 0 0 2.1 7.7" />
+          <path d="M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z" />
+        </svg>
+        <div class="brand-name">pizza.shop</div>
+      </div>
+      <h1 class="title">Painel de pizzaria em React, sem backend</h1>
+
+      <div class="mockup">
+        <div class="hdr">
+          <svg class="i" viewBox="0 0 24 24" width="24" height="24">
+            <path d="m12 14-1 1" />
+            <path d="m13.75 18.25-1.25 1.42" />
+            <path d="M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12" />
+            <path d="M18.8 9.3a1 1 0 0 0 2.1 7.7" />
+            <path d="M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z" />
+          </svg>
+          <div class="sep"></div>
+          <div class="nav">
+            <span class="on">
+              <svg class="i" viewBox="0 0 24 24" width="16" height="16"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
+              Início
+            </span>
+            <span>
+              <svg class="i" viewBox="0 0 24 24" width="16" height="16"><path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" /><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" /><path d="m2.1 21.8 6.4-6.3" /><path d="m19 5-7 7" /></svg>
+              Pedidos
+            </span>
+          </div>
+          <div class="right">
+            <div class="btn" style="width: 36px; padding: 0; justify-content: center">
+              <svg class="i" viewBox="0 0 24 24" width="16" height="16"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+            </div>
+            <div class="btn">
+              Pizza Shop
+              <svg class="i" viewBox="0 0 24 24" width="16" height="16"><path d="m6 9 6 6 6-6" /></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="page">
+          <h2>Dashboard</h2>
+          <div class="cards">
+            <div class="card">
+              <div class="t">Receita total (mês)<svg class="i" viewBox="0 0 24 24"><line x1="12" x2="12" y1="2" y2="22" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg></div>
+              <div class="v">R$ 1.248,00</div>
+              <div class="d"><span class="up">+2%</span> em relação a ontem</div>
+            </div>
+            <div class="card">
+              <div class="t">Pedidos (mês)<svg class="i" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" /></svg></div>
+              <div class="v">246</div>
+              <div class="d"><span class="up">+5%</span> em relação ao mês passado</div>
+            </div>
+            <div class="card">
+              <div class="t">Pedidos (dia)<svg class="i" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" /></svg></div>
+              <div class="v">12</div>
+              <div class="d"><span class="down">-4%</span> em relação a ontem</div>
+            </div>
+            <div class="card">
+              <div class="t">Cancelamentos (mês)<svg class="i" viewBox="0 0 24 24"><line x1="12" x2="12" y1="2" y2="22" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg></div>
+              <div class="v">8</div>
+              <div class="d"><span class="up">-3%</span> em relação ao mês passado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.BANNER_ART = {
+        style: "shape",
+        palette: ["#3b0a16", "#9f1239", "#f43f5e", "#fda4af"],
+        shapePath:
+          "M12 14 L11 15 M13.75 18.25 L12.5 19.67 M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12 M18.8 9.3a1 1 0 0 0 2.1 7.7 M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z",
+        shapeStroke: 1.6,
+        shapeBase: 0.85,
+        shapeContrast: 0.3,
+        cx: 960,
+        cy: 190,
+        radius: 150,
+        rotate: 8,
+        cell: 3,
+      };
+    </script>
+    <script src="./dither.js"></script>
+  </body>
+</html>

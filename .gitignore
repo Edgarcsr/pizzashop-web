@@ -28,3 +28,6 @@ dist-ssr
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Banner (gerado a partir de banner.src.html)
+assets/banner/banner.html

@@ -41,9 +41,12 @@ export const worker = setupWorker(
 )
 
 export async function enableMSW() {
-  if (env.MODE !== 'test') {
+  if (env.MODE !== 'test' && env.MODE !== 'demo') {
     return
   }
 
-  await worker.start()
+  await worker.start({
+    serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },
+    onUnhandledRequest: 'bypass',
+  })
 }
