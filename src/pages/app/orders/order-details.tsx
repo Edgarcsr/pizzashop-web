@@ -73,7 +73,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableRow>
               <TableRow>
                 <TableCell className="text-muted-foreground">
-                  Realizado há
+                  Realizado
                 </TableCell>
                 <TableCell className="flex justify-end">
                   {formatDistanceToNow(order.createdAt, {

@@ -20,15 +20,20 @@ import { registerRestaurantMock } from './register-restaurant-mock'
 import { signInMock } from './sign-in-mock'
 import { updateProfileMock } from './update-profile-mock'
 
-export const worker = setupWorker(
-  signInMock,
-  registerRestaurantMock,
+const metricsHandlers = [
   getDayOrdersAmountMock,
   getMonthOrdersAmountMock,
   getMonthCanceledOrdersAmountMock,
   getMonthRevenueMock,
   getDailyRevenueInPeriodMock,
   getPopularProductsMock,
+]
+
+// Deterministic fixtures the end-to-end tests assert against.
+const testHandlers = [
+  signInMock,
+  registerRestaurantMock,
+  ...metricsHandlers,
   getProfileMock,
   getManagedRestaurantMock,
   updateProfileMock,
@@ -38,12 +43,25 @@ export const worker = setupWorker(
   cancelOrderMock,
   dispatchOrderMock,
   deliverOrderMock,
-)
+]
+
+async function getHandlers() {
+  if (env.MODE !== 'demo') {
+    return testHandlers
+  }
+
+  // Loaded on demand so faker only ships in the demo build path.
+  const { authGateHandlers, demoHandlers } = await import('./demo/handlers')
+
+  return [...authGateHandlers, ...demoHandlers, ...metricsHandlers]
+}
 
 export async function enableMSW() {
   if (env.MODE !== 'test' && env.MODE !== 'demo') {
     return
   }
+
+  const worker = setupWorker(...(await getHandlers()))
 
   await worker.start({
     serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },

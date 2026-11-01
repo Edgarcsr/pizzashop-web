@@ -41,9 +41,7 @@ export function OrderDetailsSkeleton() {
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className="text-muted-foreground">
-              Realizado há
-            </TableCell>
+            <TableCell className="text-muted-foreground">Realizado</TableCell>
             <TableCell className="flex justify-end">
               <Skeleton className="h-5 w-[148px]" />
             </TableCell>

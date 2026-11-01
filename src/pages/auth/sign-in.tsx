@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -8,6 +8,7 @@ import { signIn } from '@/api/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { env } from '@/env'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signInForm = z.object({
@@ -17,6 +18,7 @@ const signInForm = z.object({
 type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const {
     register,
@@ -24,7 +26,9 @@ export function SignIn() {
     formState: { isSubmitting },
   } = useForm<SignInForm>({
     defaultValues: {
-      email: searchParams.get('email') ?? '',
+      email:
+        searchParams.get('email') ??
+        (env.MODE === 'demo' ? 'johndoe@example.com' : ''),
     },
   })
 
@@ -35,6 +39,12 @@ export function SignIn() {
   async function handleSignIn(data: SignInForm) {
     try {
       await authenticate({ email: data.email })
+
+      // The demo has no inbox for the magic link, so the session is already open.
+      if (env.MODE === 'demo') {
+        navigate('/', { replace: true })
+        return
+      }
 
       toast.success('Enviamos um link de autenticação para seu e-mail', {
         action: {
